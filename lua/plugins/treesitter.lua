@@ -14,8 +14,10 @@ return {
       vim.api.nvim_create_autocmd("FileType", {
         pattern = languages,
         callback = function()
-          vim.treesitter.start()
-          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          local ok = pcall(vim.treesitter.start)
+          if ok then
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
         end,
       })
     end,
