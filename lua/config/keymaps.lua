@@ -22,8 +22,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- Copy to system clipboard
-map("v", "<leader>y", '"+y', { desc = "Yank to clipboard" })
+-- System clipboard (no global unnamedplus; use these explicitly)
+map({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
+map("n", "<leader>Y", '"+Y', { desc = "Yank line to clipboard" })
+map({ "n", "v" }, "<leader>p", '"+p', { desc = "Paste from clipboard" })
+map({ "n", "v" }, "<leader>P", '"+P', { desc = "Paste before from clipboard" })
 
 -- Jump back (after gd etc.)
 map("n", "gb", "<C-o>", { desc = "Jump back" })

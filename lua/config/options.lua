@@ -23,7 +23,6 @@ opt.updatetime = 50
 opt.splitright = true
 opt.splitbelow = true
 opt.mouse = "a"
-opt.clipboard = "unnamedplus"
 opt.cursorline = true
 opt.ignorecase = true
 opt.smartcase = true
