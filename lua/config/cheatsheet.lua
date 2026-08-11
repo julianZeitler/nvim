@@ -278,6 +278,35 @@ local pages = {
       },
     },
   },
+
+  {
+    title = "7. Claude Code  (custom)",
+    groups = {
+      {
+        name = "Connect  (Claude runs in its own terminal)",
+        items = {
+          { "claude --ide", "launch from the project dir; finds this nvim" },
+          { "/ide", "same, from inside a running Claude session" },
+          { "<leader>ai", "is anything connected? (status)" },
+        },
+      },
+      {
+        name = "Send context",
+        items = {
+          { "<leader>as", "send selection with line numbers (visual)" },
+          { "<leader>ab", "send the whole current buffer" },
+          { "<leader>as", "send file under cursor (in netrw)" },
+        },
+      },
+      {
+        name = "Review Claude's edits",
+        items = {
+          { "<leader>aa", "accept the diff (:w does too)" },
+          { "<leader>ad", "reject the diff" },
+        },
+      },
+    },
+  },
 }
 
 local state = { buf = nil, win = nil, page = 1 }
