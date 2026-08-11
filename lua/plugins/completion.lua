@@ -3,7 +3,15 @@ return {
     "saghen/blink.cmp",
     version = "1.*",
     opts = {
-      keymap = { preset = "default" },
+      keymap = {
+        -- The "enter" preset makes <CR> accept the selected item. It falls
+        -- back to a normal newline whenever the menu is not open, so Enter
+        -- only ever "steals" a keypress while a suggestion is on screen.
+        preset = "enter",
+        -- Keep the default accept key too, for when you want a newline with
+        -- the menu still open: <C-y> accepts, Enter breaks the line.
+        ["<C-y>"] = { "select_and_accept", "fallback" },
+      },
       appearance = {
         nerd_font_variant = "mono",
       },

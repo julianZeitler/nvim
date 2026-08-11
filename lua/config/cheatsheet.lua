@@ -210,6 +210,18 @@ local pages = {
           { "<leader>tw", "toggle soft wrap" },
         },
       },
+      {
+        name = "Completion menu",
+        items = {
+          { "<CR>", "accept the selected item" },
+          { "<C-y>", "accept (works with menu open too)" },
+          { "<C-n>  <C-p>", "next / previous item" },
+          { "<C-space>", "force the menu open" },
+          { "<C-e>", "dismiss -- then <CR> gives a newline" },
+          { "<Tab> <S-Tab>", "next / previous snippet placeholder" },
+          { "<C-b>  <C-f>", "scroll the docs popup" },
+        },
+      },
     },
   },
 
@@ -249,8 +261,6 @@ local pages = {
           { "\\ref{ \\cref{", "labels defined in the document" },
           { "\\includegraphics{", "image files only" },
           { "\\begin{", "environments -- accepting closes the block" },
-          { "<C-space>", "force the menu open" },
-          { "<C-y>", "accept   <C-n>/<C-p> select" },
         },
       },
       {
