@@ -29,6 +29,16 @@ return {
         },
       },
       completion = {
+        list = {
+          selection = {
+            -- First item is highlighted as soon as the menu opens, so the
+            -- common case is just <CR>.
+            preselect = true,
+            -- Highlighting alone does not touch the buffer -- the text is
+            -- written when you accept, not while you move through the list.
+            auto_insert = false,
+          },
+        },
         -- \cite{ opens a long candidate list; showing the entry's title and
         -- author makes it pickable without memorising citation keys.
         documentation = { auto_show = true, auto_show_delay_ms = 150 },

@@ -215,10 +215,54 @@ end
 
 M.close_environment = close_environment
 
+--- Remove the stray backslash left when a snippet is triggered as `\fig`.
+---
+--- blink's keyword does not include "\", so typing `\beg` replaces only "beg"
+--- and the snippet body lands after the backslash you typed, giving
+--- `\\begin{figure}`. LaTeX users type the backslash by reflex, so this is
+--- easy to hit.
+---
+--- `\\` followed by a letter is never valid LaTeX -- `\\` is a line break and
+--- is followed by end of line, whitespace, `*` or `[` -- so finding one is
+--- unambiguous evidence of this mistake.
+---
+--- Deletes the single offending character rather than rewriting the line,
+--- because the line still holds the snippet's tabstop extmarks and replacing
+--- it wholesale would break `$1` mirroring into `\end{}`.
+--- Searches upward from the cursor rather than only the current line: a
+--- snippet's first tabstop is often below its first line (eq puts $1 in the
+--- \label, align puts it in the first row), so the doubled backslash ends up
+--- above wherever the cursor lands.
+local function fix_stray_backslash()
+  if not vim.tbl_contains({ "tex", "plaintex" }, vim.bo.filetype) then
+    return
+  end
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local first = math.max(1, row - 25)
+  for r = row, first, -1 do
+    local line = vim.api.nvim_buf_get_lines(0, r - 1, r, false)[1]
+    if line then
+      local col = line:find("\\\\%a")
+      if col then
+        vim.api.nvim_buf_set_text(0, r - 1, col - 1, r - 1, col, {})
+        return
+      end
+    end
+  end
+end
+
 vim.api.nvim_create_autocmd("User", {
   group = group,
   pattern = "BlinkCmpAccept",
-  callback = function() vim.schedule(close_environment) end,
+  callback = function(ev)
+    local item = ev.data and ev.data.item
+    vim.schedule(function()
+      if item and item.source_id == "snippets" then
+        fix_stray_backslash()
+      end
+      close_environment()
+    end)
+  end,
 })
 
 vim.api.nvim_create_autocmd("FileType", {

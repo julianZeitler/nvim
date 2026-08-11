@@ -213,11 +213,11 @@ local pages = {
       {
         name = "Completion menu",
         items = {
-          { "<CR>", "accept the selected item" },
-          { "<C-y>", "accept (works with menu open too)" },
-          { "<C-n>  <C-p>", "next / previous item" },
+          { "<CR>", "accept (first item is preselected)" },
+          { "<C-n>  <C-p>", "select next / previous item" },
+          { "<C-y>", "accept, same as <CR>" },
           { "<C-space>", "force the menu open" },
-          { "<C-e>", "dismiss -- then <CR> gives a newline" },
+          { "<C-e>", "dismiss the menu" },
           { "<Tab> <S-Tab>", "next / previous snippet placeholder" },
           { "<C-b>  <C-f>", "scroll the docs popup" },
         },
@@ -264,7 +264,7 @@ local pages = {
         },
       },
       {
-        name = "Snippets (type prefix, then accept)",
+        name = "Snippets (prefix, no backslash, then <CR>)",
         items = {
           { "beg", "any environment (name mirrors to \\end)" },
           { "eq  eq*  align", "equation / unnumbered / aligned" },
