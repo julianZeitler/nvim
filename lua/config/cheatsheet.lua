@@ -89,7 +89,7 @@ local pages = {
       {
         name = "Files & Structure",
         items = {
-          { "<leader>e", "file explorer (netrw)" },
+          { "<leader>e", "file explorer (netrw -- see page 3)" },
           { "<leader>o", "toggle symbol outline (aerial)" },
           { "[[  ]]", "previous / next symbol" },
           { "<leader>u", "toggle undotree" },
@@ -107,7 +107,62 @@ local pages = {
   },
 
   {
-    title = "3. LSP & Diagnostics  (custom)",
+    -- netrw's own maps, from its quick reference (:h netrw-browse-maps).
+    -- Descriptions note where this config changes the default behaviour.
+    title = "3. Netrw file explorer",
+    groups = {
+      {
+        name = "Open and move around",
+        items = {
+          { "<leader>e", "open netrw" },
+          { "-", "up a directory (in a file: open netrw here)" },
+          { "<CR>", "open file / enter directory" },
+          { "u  U", "back / forward through visited dirs" },
+          { "cd", "make the browsing dir the working dir" },
+        },
+      },
+      {
+        name = "Open somewhere else",
+        items = {
+          { "o  v  t", "open in split / vsplit / new tab" },
+          { "p  P", "preview / open in previous window" },
+          { "x", "open with the system program" },
+        },
+      },
+      {
+        name = "View",
+        items = {
+          { "i", "cycle thin / long / wide / tree listing" },
+          { "gh", "toggle dotfiles (hidden here by default)" },
+          { "I", "toggle the banner (off here by default)" },
+          { "s  r", "sort by name/time/size  /  reverse" },
+          { "<C-l>", "refresh the listing" },
+        },
+      },
+      {
+        name = "Create and modify",
+        items = {
+          { "%", "new file" },
+          { "d", "new directory" },
+          { "R", "rename" },
+          { "D", "delete" },
+          { "qf", "show file info" },
+        },
+      },
+      {
+        name = "Marked files",
+        items = {
+          { "mf  mu", "mark file / unmark all" },
+          { "mt", "set this dir as the copy/move target" },
+          { "mc  mm", "copy / move marked files to target" },
+          { "mx", "run a shell command on marked files" },
+        },
+      },
+    },
+  },
+
+  {
+    title = "4. LSP & Diagnostics  (custom)",
     groups = {
       {
         name = "Navigate code",
@@ -138,7 +193,7 @@ local pages = {
   },
 
   {
-    title = "4. Editing & Clipboard  (custom)",
+    title = "5. Editing & Clipboard  (custom)",
     groups = {
       {
         name = "System clipboard",
@@ -159,7 +214,7 @@ local pages = {
   },
 
   {
-    title = "5. LaTeX  (custom)",
+    title = "6. LaTeX  (custom)",
     groups = {
       {
         name = "Build",
