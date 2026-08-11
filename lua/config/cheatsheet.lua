@@ -207,7 +207,8 @@ local pages = {
       {
         name = "View",
         items = {
-          { "<leader>tw", "toggle soft wrap" },
+          { "<leader>tw", "toggle wrap (on by default in prose)" },
+          { "j  k", "move by visual line when wrapped" },
         },
       },
       {

@@ -271,16 +271,8 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(args)
     local o = vim.opt_local
 
-    -- Wrap stays off by default, as everywhere else. Turn it on for a session
-    -- with <leader>tw when you want to read a paragraph as it will be typeset.
-
-    -- Move by visual line so that j/k behave sensibly *when* wrap is toggled
-    -- on. With wrap off these are identical to plain j/k, so they cost nothing.
-    local function m(lhs, rhs, desc)
-      vim.keymap.set("n", lhs, rhs, { buffer = args.buf, expr = true, desc = desc })
-    end
-    m("j", "v:count == 0 ? 'gj' : 'j'", "Down (visual line)")
-    m("k", "v:count == 0 ? 'gk' : 'k'", "Up (visual line)")
+    -- Wrap and visual-line j/k are set for all prose filetypes in
+    -- config/options.lua, which covers tex as well as markdown and text.
 
     -- Spell checking. "en" ships with nvim so this works offline; switch to
     -- en_us or en_gb if you want region-specific spellings (nvim will offer
