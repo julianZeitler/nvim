@@ -175,6 +175,52 @@ function M.view(buf)
   end)
 end
 
+--- Turn a just-completed `\begin{name` into a whole environment block.
+---
+--- texlab completes the environment name only -- it returns plain text, not an
+--- LSP snippet -- so accepting "equation" leaves you with a dangling \begin.
+--- This finishes the job:
+---
+---     \begin{equation}
+---         |
+---     \end{equation}
+---
+--- Only fires when the \begin is the entire line up to the cursor, so it can
+--- never eat text you already typed after it.
+local function close_environment()
+  if not vim.tbl_contains({ "tex", "plaintex" }, vim.bo.filetype) then
+    return
+  end
+
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+  local before, rest = line:sub(1, col), line:sub(col + 1)
+
+  -- Environment names are letters, sometimes with * or @.
+  local indent, name = before:match("^(%s*)\\begin{([%a@]+%*?)}?$")
+  if not name then return end
+  if rest ~= "" and rest ~= "}" then return end
+
+  local pad = vim.bo.expandtab
+      and string.rep(" ", vim.bo.shiftwidth > 0 and vim.bo.shiftwidth or 4)
+      or "\t"
+
+  vim.api.nvim_buf_set_lines(0, row - 1, row, false, {
+    indent .. "\\begin{" .. name .. "}",
+    indent .. pad,
+    indent .. "\\end{" .. name .. "}",
+  })
+  vim.api.nvim_win_set_cursor(0, { row + 1, #indent + #pad })
+end
+
+M.close_environment = close_environment
+
+vim.api.nvim_create_autocmd("User", {
+  group = group,
+  pattern = "BlinkCmpAccept",
+  callback = function() vim.schedule(close_environment) end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
   group = group,
   pattern = { "tex", "plaintex", "bib" },
