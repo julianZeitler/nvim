@@ -27,6 +27,11 @@ opt.cursorline = true
 opt.ignorecase = true
 opt.smartcase = true
 
+-- Treat .tex as LaTeX. Without this nvim guesses from the file contents and
+-- falls back to "plaintex" for fragments that have no \documentclass -- which
+-- is exactly what the section files under content/ look like.
+vim.g.tex_flavor = "latex"
+
 -- netrw settings
 vim.g.netrw_banner = 0                              -- hide banner (I)
 vim.g.netrw_hide = 1                                -- enable hide list

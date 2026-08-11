@@ -47,9 +47,31 @@ return {
         capabilities = capabilities,
       })
 
+      -- LaTeX. texlab supplies command/environment completion, citations read
+      -- from the .bib files the document loads, \ref and \label completion, and
+      -- image-filtered path completion for \includegraphics.
+      --
+      -- Build is left to the project's own build.sh (see <leader>ll), so
+      -- texlab's builder is disabled -- otherwise two things compile the same
+      -- document and race over the .aux files.
+      vim.lsp.config("texlab", {
+        cmd = { "texlab" },
+        filetypes = { "tex", "plaintex", "bib" },
+        root_markers = { "build.sh", "main.tex", ".latexmkrc", ".git" },
+        capabilities = capabilities,
+        settings = {
+          texlab = {
+            build = { onSave = false, forwardSearchAfter = false },
+            chktex = { onOpenAndSave = true, onEdit = false },
+            diagnosticsDelay = 300,
+            formatterLineLength = 80,
+          },
+        },
+      })
+
       require("mason-lspconfig").setup({
-        ensure_installed = { "basedpyright", "clangd", "rust_analyzer" },
-        automatic_enable = { "basedpyright", "clangd", "rust_analyzer" },
+        ensure_installed = { "basedpyright", "clangd", "rust_analyzer", "texlab" },
+        automatic_enable = { "basedpyright", "clangd", "rust_analyzer", "texlab" },
       })
     end,
   },

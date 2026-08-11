@@ -1,10 +1,8 @@
 local map = vim.keymap.set
 
--- Render hover floats with border and proper markdown conceal
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { border = "rounded", max_width = 80 }
-)
+-- Render hover floats with a border. vim.lsp.with() is deprecated on 0.11+;
+-- the options go straight to vim.lsp.buf.hover() instead (see the K map below).
+local hover_opts = { border = "rounded", max_width = 80 }
 
 -- LSP keymaps (set on attach)
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -12,7 +10,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local map = function(keys, func, desc)
       vim.keymap.set("n", keys, func, { buffer = args.buf, desc = desc })
     end
-    map("K",  vim.lsp.buf.hover,          "Hover docs")
+    map("K",  function() vim.lsp.buf.hover(hover_opts) end, "Hover docs")
     map("gd", vim.lsp.buf.definition,     "Go to definition")
     map("gD", vim.lsp.buf.declaration,    "Go to declaration")
     map("gi", vim.lsp.buf.implementation, "Go to implementation")
@@ -40,6 +38,16 @@ end, { desc = "Toggle diagnostics" })
 map("n", "D", function()
   vim.diagnostic.open_float({ border = "rounded" })
 end, { desc = "Show diagnostic" })
+
+-- Toggle soft wrap (global: useful in prose, logs and long lines anywhere).
+-- linebreak/breakindent come along so wrapping breaks at words, not mid-word.
+map("n", "<leader>tw", function()
+  local on = not vim.wo.wrap
+  vim.wo.wrap = on
+  vim.wo.linebreak = on
+  vim.wo.breakindent = on
+  vim.notify("Wrap " .. (on and "on" or "off"), vim.log.levels.INFO)
+end, { desc = "Toggle wrap" })
 
 -- Window navigation
 map("n", "<C-h>", "<C-w>h", { desc = "Window left" })
