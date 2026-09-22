@@ -2,8 +2,20 @@
 -- Filters out the LazyVim/LazyVim spec (not needed in vanilla lazy.nvim).
 -- Sets up the colorscheme plugin and applies it.
 
-local path = vim.fn.expand("~/.config/omarchy/current/theme/neovim.lua")
-if vim.fn.filereadable(path) == 0 then
+-- Omarchy quattro generates theme state into ~/.local/state/omarchy/current;
+-- 3.8.x and earlier used ~/.config/omarchy/current. Probe both.
+local path = nil
+for _, candidate in ipairs({
+  "~/.local/state/omarchy/current/theme/neovim.lua",
+  "~/.config/omarchy/current/theme/neovim.lua",
+}) do
+  local expanded = vim.fn.expand(candidate)
+  if vim.fn.filereadable(expanded) == 1 then
+    path = expanded
+    break
+  end
+end
+if not path then
   return {}
 end
 
