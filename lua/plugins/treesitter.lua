@@ -1,7 +1,7 @@
 -- Parser names, as nvim-treesitter knows them.
 local languages = {
   "python", "c", "typescript", "tsx", "rust", "lua", "vim", "vimdoc",
-  "latex", "bibtex",
+  "latex", "bibtex", "markdown", "markdown_inline",
 }
 
 -- Filetypes to start treesitter on. Usually identical to the parser name, but
@@ -9,7 +9,7 @@ local languages = {
 -- "bib". Keying the autocmd off parser names would silently skip those.
 local filetypes = {
   "python", "c", "typescript", "tsx", "rust", "lua", "vim", "vimdoc",
-  "tex", "plaintex", "bib",
+  "tex", "plaintex", "bib", "markdown",
 }
 
 return {
